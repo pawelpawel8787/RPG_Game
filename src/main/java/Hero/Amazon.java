@@ -7,6 +7,7 @@ import Monster.Skeleton;
 import Monster.TypeOfMonster;
 import Place.Places;
 import Weapon.Bow;
+import Weapon.Weapons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,31 +70,30 @@ public class Amazon extends Hero {
 
     public void attack(Monsters monster) {
         Random hitOrMissRandom = new Random();
-
         boolean hitToMonster = false;
         boolean hitToHero = false;
+
         if (monster.getTypeOfMonster().equals(TypeOfMonster.FLYING)) {
             System.out.println("Życie potwora: " + monster.getHitPoints());
-            System.out.println("Życie amazonki: " + getHitPoints());
+            System.out.println("Życie bohatera: " + getHitPoints());
             do {
-               
                 hitToMonster = hitOrMissRandom.nextBoolean();
                 if (hitToMonster == true) {
                     monster.setHitPoints(monster.getHitPoints() - Bow.getFlyingHit());
-                    System.out.println("Życie potwora: " + monster.getHitPoints());
+                    System.out.println("Trafiłeś! Życie potwora: " + monster.getHitPoints());
                 } else {
                     System.out.println("Nie trafiłeś!");
                 }
                 hitToHero = hitOrMissRandom.nextBoolean();
                 if (hitToHero == true) {
                     setHitPoints(getHitPoints() - monster.getMadeDamageToHero());
-                    System.out.println("Życie amazonki: " + getHitPoints());
+                    System.out.println("Potwór Cię trafił! Życie bohatera: " + getHitPoints());
                 } else {
                     System.out.println("Potwór nie trafił! Twoja kolej na atak");
                 }
+            }
+            while (!(monster.getHitPoints() <= 0 || getHitPoints() <= 0));
 
-
-            } while (!(monster.getHitPoints() <= 0 || getHitPoints() <= 0));
             if (monster.getHitPoints() > 0) {
                 System.out.println("Zostałeś pokonany!");
             } else {
@@ -102,14 +102,68 @@ public class Amazon extends Hero {
                 levelUp();
                 System.out.println("Twój bohater posiada aktualnie " + getLevel() + " level, " + getExperience() + " doświadczenia i " + getHitPoints() + " punktów życia.");
             }
+        }
+        else if (monster.getTypeOfMonster().equals(TypeOfMonster.MAGIC)) {
+            System.out.println("Życie potwora: " + monster.getHitPoints());
+            System.out.println("Życie bohatera: " + getHitPoints());
 
+            do {
+                hitToMonster = hitOrMissRandom.nextBoolean();
+                if (hitToMonster == true) {
+                    monster.setHitPoints(monster.getHitPoints() - Bow.getMagicalHit());
+                    System.out.println("Trafiłeś! Życie potwora: " + monster.getHitPoints());
+                } else {
+                    System.out.println("Nie trafiłeś!");
+                }
+                hitToHero = hitOrMissRandom.nextBoolean();
+                if (hitToHero == true) {
+                    setHitPoints(getHitPoints() - monster.getMadeDamageToHero());
+                    System.out.println("Potwór Cię trafił! Życie bohatera: " + getHitPoints());
+                } else {
+                    System.out.println("Potwór nie trafił! Twoja kolej na atak");
+                }
+            }
+            while (!(monster.getHitPoints() <= 0 || getHitPoints() <= 0));
 
-        } else if (monster.getTypeOfMonster().equals(TypeOfMonster.MAGIC)) {
-            System.out.println("Wybrałeś: " + monster);
-            monster.setHitPoints(monster.getHitPoints() - Bow.getMagicalHit());
-        } else if (monster.getTypeOfMonster().equals(TypeOfMonster.PHYSICAL)) {
-            System.out.println("Wybrałeś: " + monster);
-            monster.setHitPoints(monster.getHitPoints() - Bow.getPhysicalHit());
+            if (monster.getHitPoints() > 0) {
+                System.out.println("Zostałeś pokonany!");
+            } else {
+                System.out.println("Wygrałeś! Dostajesz " + monster.getGivenExperienceToHero() + " punktów doświadczenia!");
+                setExperience(getExperience() + monster.getGivenExperienceToHero());
+                levelUp();
+                System.out.println("Twój bohater posiada aktualnie " + getLevel() + " level, " + getExperience() + " doświadczenia i " + getHitPoints() + " punktów życia.");
+            }
+        }
+        else if (monster.getTypeOfMonster().equals(TypeOfMonster.PHYSICAL)) {
+            System.out.println("Życie potwora: " + monster.getHitPoints());
+            System.out.println("Życie bohatera: " + getHitPoints());
+
+            do {
+                hitToMonster = hitOrMissRandom.nextBoolean();
+                if (hitToMonster == true) {
+                    monster.setHitPoints(monster.getHitPoints() - Bow.getPhysicalHit());
+                    System.out.println("Trafiłeś! Życie potwora: " + monster.getHitPoints());
+                } else {
+                    System.out.println("Nie trafiłeś!");
+                }
+                hitToHero = hitOrMissRandom.nextBoolean();
+                if (hitToHero == true) {
+                    setHitPoints(getHitPoints() - monster.getMadeDamageToHero());
+                    System.out.println("Potwór Cię trafił! Życie bohatera: " + getHitPoints());
+                } else {
+                    System.out.println("Potwór nie trafił! Twoja kolej na atak");
+                }
+            }
+            while (!(monster.getHitPoints() <= 0 || getHitPoints() <= 0));
+
+            if (monster.getHitPoints() > 0) {
+                System.out.println("Zostałeś pokonany!");
+            } else {
+                System.out.println("Wygrałeś! Dostajesz " + monster.getGivenExperienceToHero() + " punktów doświadczenia!");
+                setExperience(getExperience() + monster.getGivenExperienceToHero());
+                levelUp();
+                System.out.println("Twój bohater posiada aktualnie " + getLevel() + " level, " + getExperience() + " doświadczenia i " + getHitPoints() + " punktów życia.");
+            }
         }
     }
 }
