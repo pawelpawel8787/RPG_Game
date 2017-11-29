@@ -11,8 +11,6 @@ public class Bow implements Weapons{
     private static final int FLYING_HIT = 120;
     private static final int MAGICAL_HIT = 80;
 
-
-
     public static int getPhysicalHit() {
         return PHYSICAL_HIT;
     }
