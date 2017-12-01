@@ -8,6 +8,7 @@ import Monster.TypeOfMonster;
 import Place.Places;
 import Weapon.Bow;
 import Weapon.MagicWand;
+import Weapon.Sword;
 import Weapon.Weapons;
 
 import java.util.ArrayList;
@@ -50,16 +51,15 @@ public class Wizard extends Hero {
         int heroHitPoints = getHitPoints();
         int hitPointsPerLevel = 200;
 
-        int levelUpCounter = heroExperience / heroLevel;
+        int levelUpCounter = (heroExperience - (heroLevel*100))/100;
 
-        if (levelUpCounter >= 100) {
+        if (levelUpCounter >= 1) {
 
-            for (int i = 0; i < levelUpCounter / 100; i++) {
+            for (int i = 0; i <= levelUpCounter; i++) {
                 heroLevel++;
                 heroHitPoints += hitPointsPerLevel;
                 setLevel(heroLevel);
                 setHitPoints(heroHitPoints);
-                System.out.println();
                 System.out.println("Zdobyłeś " + heroLevel + " level! Masz +" + hitPointsPerLevel + " do życia.");
             }
         }
@@ -74,19 +74,51 @@ public class Wizard extends Hero {
             System.out.println("Życie potwora: " + monster.getHitPoints());
             System.out.println("Życie bohatera: " + getHitPoints());
             do {
-                hitToMonster = hitOrMissRandom.nextBoolean();
-                if (hitToMonster == true) {
-                    monster.setHitPoints(monster.getHitPoints() - MagicWand.getFlyingHit());
-                    System.out.println("Trafiłeś! Życie potwora: " + monster.getHitPoints());
-                } else {
-                    System.out.println("Nie trafiłeś!");
-                }
                 hitToHero = hitOrMissRandom.nextBoolean();
                 if (hitToHero == true) {
                     setHitPoints(getHitPoints() - monster.getMadeDamageToHero());
                     System.out.println("Potwór Cię trafił! Życie bohatera: " + getHitPoints());
                 } else {
                     System.out.println("Potwór nie trafił! Twoja kolej na atak");
+                }
+                hitToMonster = hitOrMissRandom.nextBoolean();
+                if (hitToMonster == true) {
+                    monster.setHitPoints(monster.getHitPoints() - Sword.getFlyingHit());
+                    System.out.println("Trafiłeś! Życie potwora: " + monster.getHitPoints());
+                } else {
+                    System.out.println("Nie trafiłeś!");
+                }
+            }
+            while (!(monster.getHitPoints() <= 0 || getHitPoints() <= 0));
+
+
+
+            if (monster.getHitPoints() > 0) {
+                System.out.println("Zostałeś pokonany!");
+            } else {
+                System.out.println("Wygrałeś! Dostajesz " + monster.getGivenExperienceToHero() + " punktów doświadczenia!");
+                setExperience(getExperience() + monster.getGivenExperienceToHero());
+                levelUp();
+                System.out.println("Twój bohater posiada aktualnie " + getLevel() + " level, " + getExperience() + " doświadczenia i " + getHitPoints() + " punktów życia.");
+            }
+        } else if (monster.getTypeOfMonster().equals(TypeOfMonster.MAGIC)) {
+            System.out.println("Życie potwora: " + monster.getHitPoints());
+            System.out.println("Życie bohatera: " + getHitPoints());
+
+            do {
+                hitToHero = hitOrMissRandom.nextBoolean();
+                if (hitToHero == true) {
+                    setHitPoints(getHitPoints() - monster.getMadeDamageToHero());
+                    System.out.println("Potwór Cię trafił! Życie bohatera: " + getHitPoints());
+                } else {
+                    System.out.println("Potwór nie trafił! Twoja kolej na atak");
+                }
+                hitToMonster = hitOrMissRandom.nextBoolean();
+                if (hitToMonster == true) {
+                    monster.setHitPoints(monster.getHitPoints() - Sword.getMagicalHit());
+                    System.out.println("Trafiłeś! Życie potwora: " + monster.getHitPoints());
+                } else {
+                    System.out.println("Nie trafiłeś!");
                 }
             }
             while (!(monster.getHitPoints() <= 0 || getHitPoints() <= 0));
@@ -99,19 +131,11 @@ public class Wizard extends Hero {
                 levelUp();
                 System.out.println("Twój bohater posiada aktualnie " + getLevel() + " level, " + getExperience() + " doświadczenia i " + getHitPoints() + " punktów życia.");
             }
-        }
-        else if (monster.getTypeOfMonster().equals(TypeOfMonster.MAGIC)) {
+        } else if (monster.getTypeOfMonster().equals(TypeOfMonster.PHYSICAL)) {
             System.out.println("Życie potwora: " + monster.getHitPoints());
             System.out.println("Życie bohatera: " + getHitPoints());
 
             do {
-                hitToMonster = hitOrMissRandom.nextBoolean();
-                if (hitToMonster == true) {
-                    monster.setHitPoints(monster.getHitPoints() - MagicWand.getMagicalHit());
-                    System.out.println("Trafiłeś! Życie potwora: " + monster.getHitPoints());
-                } else {
-                    System.out.println("Nie trafiłeś!");
-                }
                 hitToHero = hitOrMissRandom.nextBoolean();
                 if (hitToHero == true) {
                     setHitPoints(getHitPoints() - monster.getMadeDamageToHero());
@@ -119,36 +143,12 @@ public class Wizard extends Hero {
                 } else {
                     System.out.println("Potwór nie trafił! Twoja kolej na atak");
                 }
-            }
-            while (!(monster.getHitPoints() <= 0 || getHitPoints() <= 0));
-
-            if (monster.getHitPoints() > 0) {
-                System.out.println("Zostałeś pokonany!");
-            } else {
-                System.out.println("Wygrałeś! Dostajesz " + monster.getGivenExperienceToHero() + " punktów doświadczenia!");
-                setExperience(getExperience() + monster.getGivenExperienceToHero());
-                levelUp();
-                System.out.println("Twój bohater posiada aktualnie " + getLevel() + " level, " + getExperience() + " doświadczenia i " + getHitPoints() + " punktów życia.");
-            }
-        }
-        else if (monster.getTypeOfMonster().equals(TypeOfMonster.PHYSICAL)) {
-            System.out.println("Życie potwora: " + monster.getHitPoints());
-            System.out.println("Życie bohatera: " + getHitPoints());
-
-            do {
                 hitToMonster = hitOrMissRandom.nextBoolean();
                 if (hitToMonster == true) {
-                    monster.setHitPoints(monster.getHitPoints() - MagicWand.getPhysicalHit());
+                    monster.setHitPoints(monster.getHitPoints() - Sword.getPhysicalHit());
                     System.out.println("Trafiłeś! Życie potwora: " + monster.getHitPoints());
                 } else {
                     System.out.println("Nie trafiłeś!");
-                }
-                hitToHero = hitOrMissRandom.nextBoolean();
-                if (hitToHero == true) {
-                    setHitPoints(getHitPoints() - monster.getMadeDamageToHero());
-                    System.out.println("Potwór Cię trafił! Życie bohatera: " + getHitPoints());
-                } else {
-                    System.out.println("Potwór nie trafił! Twoja kolej na atak");
                 }
             }
             while (!(monster.getHitPoints() <= 0 || getHitPoints() <= 0));
