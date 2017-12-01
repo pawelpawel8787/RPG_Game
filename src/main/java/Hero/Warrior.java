@@ -22,7 +22,7 @@ public class Warrior extends Hero {
         Sword sword = new Sword();
         setWeapon(sword);
         setExperience(0);
-        setHitPoints(1000);
+        setHitPoints(1200);
         setLevel(1);
     }
 
@@ -49,21 +49,18 @@ public class Warrior extends Hero {
         int heroExperience = getExperience();
         int heroLevel = getLevel();
         int heroHitPoints = getHitPoints();
-        int hitPointsPerLevel = 300;
-        int maxLevel = 100;
+        int hitPointsPerLevel = 200;
 
-        List<Integer> intervalsOfExperience = new ArrayList<Integer>(maxLevel);
-        for (int i = 1; i < maxLevel; i++) {
-            intervalsOfExperience.add(i * 100);
-        }
+        int levelUpCounter = heroExperience / heroLevel;
 
-        for (int result : intervalsOfExperience
-                ) {
-            if (heroExperience >= result) {
+        if (levelUpCounter >= 100) {
+
+            for (int i = 0; i < levelUpCounter / 100; i++) {
                 heroLevel++;
                 heroHitPoints += hitPointsPerLevel;
                 setLevel(heroLevel);
                 setHitPoints(heroHitPoints);
+                System.out.println();
                 System.out.println("Zdobyłeś " + heroLevel + " level! Masz +" + hitPointsPerLevel + " do życia.");
             }
         }

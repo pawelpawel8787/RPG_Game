@@ -7,7 +7,6 @@ import Monster.Skeleton;
 import Monster.TypeOfMonster;
 import Place.Places;
 import Weapon.Bow;
-import Weapon.Weapons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,23 +48,21 @@ public class Amazon extends Hero {
         int heroLevel = getLevel();
         int heroHitPoints = getHitPoints();
         int hitPointsPerLevel = 200;
-        int maxLevel = 100;
 
-        List<Integer> intervalsOfExperience = new ArrayList<Integer>(maxLevel);
-        for (int i = 1; i < maxLevel; i++) {
-            intervalsOfExperience.add(i * 100);
-        }
+        int levelUpCounter = heroExperience / heroLevel;
 
-        for (int result : intervalsOfExperience
-                ) {
-            if (heroExperience >= result) {
+        if (levelUpCounter >= 100) {
+
+            for (int i = 0; i < levelUpCounter / 100; i++) {
                 heroLevel++;
                 heroHitPoints += hitPointsPerLevel;
                 setLevel(heroLevel);
                 setHitPoints(heroHitPoints);
+                System.out.println();
                 System.out.println("Zdobyłeś " + heroLevel + " level! Masz +" + hitPointsPerLevel + " do życia.");
             }
         }
+
     }
 
     public void attack(Monsters monster) {
@@ -102,8 +99,7 @@ public class Amazon extends Hero {
                 levelUp();
                 System.out.println("Twój bohater posiada aktualnie " + getLevel() + " level, " + getExperience() + " doświadczenia i " + getHitPoints() + " punktów życia.");
             }
-        }
-        else if (monster.getTypeOfMonster().equals(TypeOfMonster.MAGIC)) {
+        } else if (monster.getTypeOfMonster().equals(TypeOfMonster.MAGIC)) {
             System.out.println("Życie potwora: " + monster.getHitPoints());
             System.out.println("Życie bohatera: " + getHitPoints());
 
@@ -133,8 +129,7 @@ public class Amazon extends Hero {
                 levelUp();
                 System.out.println("Twój bohater posiada aktualnie " + getLevel() + " level, " + getExperience() + " doświadczenia i " + getHitPoints() + " punktów życia.");
             }
-        }
-        else if (monster.getTypeOfMonster().equals(TypeOfMonster.PHYSICAL)) {
+        } else if (monster.getTypeOfMonster().equals(TypeOfMonster.PHYSICAL)) {
             System.out.println("Życie potwora: " + monster.getHitPoints());
             System.out.println("Życie bohatera: " + getHitPoints());
 
